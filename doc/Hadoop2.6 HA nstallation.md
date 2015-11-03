@@ -2,12 +2,12 @@
 ----
 
     环境描述：
-
+```python
 System  ：  Centos 7.1 x64
 Hadoop  :   hadoop-2.6.0-cdh5.4.5
 Zookeeper   :   zookeeper-3.4.6
 JDK     :       jdk1.7.0_80
-
+```
     添加hosts记录：
 ```python
 10.10.3.179     hadoop0
@@ -244,34 +244,35 @@ hadoop2
 ```python
 [root@hadoop0 hadoop]# mkdir -p /usr/local/hadoop/{nn，journal}
 ```
-    将修改好的hadoop目录拷贝到各个节点：[root@hadoop0 local]# scp -r hadoop hadoop1:/usr/local/
-    为datanode节点创建数据目录：
+    将修改好的hadoop目录拷贝到各个节点：
 ```python
-    [root@hadoop0 sbin]# ./slaves.sh mkdir /data{0,1,2}/dfs/
+[root@hadoop0 local]# scp -r hadoop hadoop1:/usr/local/
+为datanode节点创建数据目录：
+[root@hadoop0 sbin]# ./slaves.sh mkdir /data{0,1,2}/dfs/
 ```
     拷贝系统/环境变量到各个服务器：
 ```python
-    [root@hadoop0 ~]# scp /etc/hosts /etc/profile hadoop1:/etc/
-    [root@hadoop0 ~]# hdfs zkfc -formatZK
+[root@hadoop0 ~]# scp /etc/hosts /etc/profile hadoop1:/etc/
+[root@hadoop0 ~]# hdfs zkfc -formatZK
 ```
     第一次启动格式化HDFS
 ```python
-    hdfs namenode -format
+[root@hadoop0 ~]# hdfs namenode -format
 ```
     启动hdfs服务：
     通过start-dfs.sh 直接启动所有服务:
 ```python
-    [root@hadoop0 sbin]# ./start-dfs.sh 
-    [root@hadoop0 sbin]# jps
-    20422 Jps
-    17813 JournalNode
-    18174 DFSZKFailoverController
-    17595 NameNode
+[root@hadoop0 sbin]# ./start-dfs.sh 
+[root@hadoop0 sbin]# jps
+20422 Jps
+17813 JournalNode
+18174 DFSZKFailoverController
+17595 NameNode
 ```
     访问 http://hadoop0:50070 会看到该节点已经成为active
     下面需要同步一次元数据：
 ```python
-    [root@hadoop0 sbin]#hdfs namenode -bootstrapStandby
+[root@hadoop0 sbin]#hdfs namenode -bootstrapStandby
 ```    
     访问 http://hadoop1:50070/dfshealth.html#tab-overview  会看到该节点已经成为standby。
     
