@@ -17,16 +17,16 @@ JDK     	:       jdk1.7.0_80
 
 ## 创建root互信
 
-    [root@hadoop0 ~]# ssh-keygen -t rsa
-    [root@hadoop0 ~]# cd .ssh/ ; cp id_rsa.pub authorized_keys
+	[root@hadoop0 ~]# ssh-keygen -t rsa
+	[root@hadoop0 ~]# cd .ssh/ ; cp id_rsa.pub authorized_keys
 
  Slave机器创建ssh目录 ： 
         
-    mkdir -m 700 /root/.ssh
+    [root@hadoop0 src]# mkdir -m 700 /root/.ssh
 
 将公钥复制到Slave机器上：
 
-    scp authorized_keys  hadoop1:/root/.ssh/
+    [root@hadoop0 src]# scp authorized_keys  hadoop1:/root/.ssh/
 
     注：由于完全模拟生产环境，故把角色尽量分开，所以需要做2次互信（hadoop1,hadoop2）机器都需要
 
