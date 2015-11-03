@@ -3,10 +3,10 @@
 
     环境描述：
 ```python
-System  ：  Centos 7.1 x64
-Hadoop  :   hadoop-2.6.0-cdh5.4.5
+System		：  Centos 7.1 x64
+Hadoop		:   hadoop-2.6.0-cdh5.4.5
 Zookeeper   :   zookeeper-3.4.6
-JDK     :       jdk1.7.0_80
+JDK     	:       jdk1.7.0_80
 ```
     添加hosts记录：
 ```python
@@ -272,14 +272,14 @@ hadoop2
     访问 http://hadoop0:50070 会看到该节点已经成为active
     下面需要同步一次元数据：
 ```python
-[root@hadoop0 sbin]#hdfs namenode -bootstrapStandby
+[root@hadoop0 sbin]# hdfs namenode -bootstrapStandby
 ```    
     访问 http://hadoop1:50070/dfshealth.html#tab-overview  会看到该节点已经成为standby。
     
     然后kill掉hadoop0上的active NN进程，standby NN会成为active
     注意：手动切换时，会提示下面警告。所以一般在启动zkfc的情况下也无需进行切换。
 ```python
-[root@hadoop0 sbin]#hdfs haadmin -transitionToActive nn1
+[root@hadoop0 sbin]# hdfs haadmin -transitionToActive nn1
 ```
 
     启动yarn服务：
