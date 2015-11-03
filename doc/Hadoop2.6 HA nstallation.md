@@ -1,13 +1,13 @@
 ﻿#Hadoop2.6 HA部署
 ----
 
-    环境描述：
-
-System  ：  Centos 7.1 x64
-Hadoop  :   hadoop-2.6.0-cdh5.4.5
+环境描述：
+```python
+System      :   Centos 7.1 x64
+Hadoop      :   hadoop-2.6.0-cdh5.4.5
 Zookeeper   :   zookeeper-3.4.6
-JDK     :       jdk1.7.0_80
-
+Jdk         :   jdk1.7.0_80
+```
     添加hosts记录：
 ```python
 10.10.3.179     hadoop0
@@ -22,28 +22,27 @@ JDK     :       jdk1.7.0_80
 
  Slave机器创建ssh目录 ： 
         
-    mkdir -m 700 /root/.ssh
+    [root@hadoop0 src]# mkdir -m 700 /root/.ssh
 
 将公钥复制到Slave机器上：
 
-    scp authorized_keys  hadoop1:/root/.ssh/
+    [root@hadoop1 src]# scp authorized_keys  hadoop1:/root/.ssh/
 
     注：由于完全模拟生产环境，故把角色尽量分开，所以需要做2次互信（hadoop1,hadoop2）机器都需要
 
 测试无密码登录是否正常 ！！
 
     添加环境变量
-    [root@hadoop0 src]# more /etc/profile
 ```python
+[root@hadoop0 src]# more /etc/profile
 export JAVA_HOME=/usr/java/jdk1.7.0_80
 export HADOOP_HOME=/usr/local/hadoop
-export ZOOKEEPER_HOME=/usr/local/zookpeer
 PATH=/usr/local/cassandra/bin:$JAVA_HOME/bin:$ZOOKEEPER_HOME/bin:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$PATH
 CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$ZOOKEEPER_HOME/lib:$JAVA_HOME/lib/tools.jar
 ```
 ## 安装zookeeper
     
-    zookeeper具体安装过程请见hbase集群部署文档。
+    zookeeper具体安装过程请见Hbase基础与集群部署文档。
 
 ## 安装hadoop集群
 
@@ -244,34 +243,38 @@ hadoop2
 ```python
 [root@hadoop0 hadoop]# mkdir -p /usr/local/hadoop/{nn，journal}
 ```
-    将修改好的hadoop目录拷贝到各个节点：[root@hadoop0 local]# scp -r hadoop hadoop1:/usr/local/
+    将修改好的hadoop目录拷贝到各个节点(hadoop1,hadoop2)：
+    
+```python
+[root@hadoop0 local]# scp -r hadoop hadoop1:/usr/local/
+```
     为datanode节点创建数据目录：
 ```python
-    [root@hadoop0 sbin]# ./slaves.sh mkdir /data{0,1,2}/dfs/
+[root@hadoop0 sbin]# ./slaves.sh mkdir /data{0,1,2}/dfs/
 ```
     拷贝系统/环境变量到各个服务器：
 ```python
-    [root@hadoop0 ~]# scp /etc/hosts /etc/profile hadoop1:/etc/
-    [root@hadoop0 ~]# hdfs zkfc -formatZK
+[root@hadoop0 ~]# scp /etc/hosts /etc/profile hadoop1:/etc/
+[root@hadoop0 ~]# hdfs zkfc -formatZK
 ```
     第一次启动格式化HDFS
 ```python
-    hdfs namenode -format
+[root@hadoop0 ~]# hdfs namenode -format
 ```
     启动hdfs服务：
     通过start-dfs.sh 直接启动所有服务:
 ```python
-    [root@hadoop0 sbin]# ./start-dfs.sh 
-    [root@hadoop0 sbin]# jps
-    20422 Jps
-    17813 JournalNode
-    18174 DFSZKFailoverController
-    17595 NameNode
+[root@hadoop0 sbin]# ./start-dfs.sh 
+[root@hadoop0 sbin]# jps
+20422 Jps
+17813 JournalNode
+18174 DFSZKFailoverController
+17595 NameNode
 ```
     访问 http://hadoop0:50070 会看到该节点已经成为active
     下面需要同步一次元数据：
 ```python
-    [root@hadoop0 sbin]#hdfs namenode -bootstrapStandby
+[root@hadoop0 sbin]#hdfs namenode -bootstrapStandby
 ```    
     访问 http://hadoop1:50070/dfshealth.html#tab-overview  会看到该节点已经成为standby。
     
