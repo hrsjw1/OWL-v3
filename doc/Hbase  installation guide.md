@@ -71,7 +71,7 @@
 ```python
 <property>
         <name>hbase.rootdir</name>
-        <value>hdfs:// hadoop0:9000/hbase</value>
+        <value>hdfs://hadoop0:9000/hbase</value>
 </property>
 
 <property>
@@ -81,18 +81,19 @@
 
 <property>
         <name>hbase.zookeeper.quorum</name>
-        <value> hadoop0 </value>
+        <value>hadoop0</value>
 </property>
  
 <property>
-        <name> dfs.replication </name>
-        <value> 1</value>
+        <name>dfs.replication</name>
+        <value>1</value>
 </property>
 ```
-#### 4.3 (可选)文件regionservers的内容为hadoop0
-#### 4.4 启动hbase，执行命令start-hbase.sh
+    (可选)文件regionservers的内容为hadoop0
+    启动hbase，执行命令start-hbase.sh
     ******启动hbase之前，确保hadoop是运行正常的，并且可以写入文件*******
-#### 4.5 验证
+    
+    验证
     (1)执行jps，发现新增加了3个java进程，分别是HMaster、HRegionServer、HQuorumPeer 
     (2)使用浏览器访问http://hadoop0:16010
 
