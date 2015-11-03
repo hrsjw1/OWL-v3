@@ -33,7 +33,7 @@
 
 ## Hbase 基础
 
-### 1.HBase(NoSQL)的数据模型
+### HBase(NoSQL)的数据模型
     表(table)，是存储管理数据的。
     行键(row key)，类似于MySQL中的主键。
     行键是HBase表天然自带的。 
